@@ -1,0 +1,33 @@
+<div class="metrics-compact">
+  <span class="metric-item">
+    <strong><%= metrics[:total_children] %></strong> descendant<%= metrics[:total_children] == 1 ? '' : 's' %>
+    <% if metrics[:children_by_state].any? %>
+      (<% metrics[:children_by_state].each_with_index do |(state, count), index| %>
+        <%= issue_state_badge(state) %> <%= count %><%= index < metrics[:children_by_state].length - 1 ? ', ' : '' %>
+      <% end %>)
+    <% end %>
+  </span>
+
+  <span class="metric-separator">•</span>
+
+  <span class="metric-item">
+    <strong><%= metrics[:total_docs] %></strong> design doc<%= metrics[:total_docs] == 1 ? '' : 's' %>
+    <% if metrics[:docs_approved] > 0 %>
+      (<strong class="metric-highlight">✓ <%= metrics[:docs_approved] %></strong> approved)
+    <% end %>
+  </span>
+
+  <span class="metric-separator">•</span>
+
+  <span class="metric-item">
+    <strong><%= metrics[:total_prs] %></strong> PR<%= metrics[:total_prs] == 1 ? '' : 's' %>
+    <% if metrics[:prs_by_state].any? %>
+      (<% metrics[:prs_by_state].each_with_index do |(state, count), index| %>
+        <%= pr_state_badge(state) %> <%= count %><%= index < metrics[:prs_by_state].length - 1 ? ', ' : '' %>
+      <% end %>)
+    <% end %>
+    <% if metrics[:unresolved_comments_total] > 0 %>
+      <span class="metric-warning">⚠️ <%= metrics[:unresolved_comments_total] %> unresolved</span>
+    <% end %>
+  </span>
+</div>

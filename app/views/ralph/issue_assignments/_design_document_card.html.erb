@@ -1,0 +1,33 @@
+<div class="doc-card">
+  <div class="doc-card-header">
+    <div class="doc-status-info">
+      <%= doc_status_badge(design_document.status, design_document.approved?) %>
+      <% if design_document.gist_url.present? %>
+        <%= link_to "View Gist", design_document.gist_url, target: "_blank", rel: "noopener noreferrer", class: "doc-link" %>
+      <% end %>
+    </div>
+    <div class="doc-metadata">
+      <% if design_document.created_at %>
+        Created <%= format_timestamp(design_document.created_at) %>
+      <% end %>
+      <% if design_document.updated_at && design_document.updated_at != design_document.created_at %>
+        • Updated <%= format_timestamp(design_document.updated_at) %>
+      <% end %>
+    </div>
+  </div>
+
+  <% if design_document.approved_at %>
+    <div class="doc-approval-info">
+      ✓ Approved <%= format_timestamp(design_document.approved_at) %>
+    </div>
+  <% end %>
+
+  <% if design_document.content.present? %>
+    <details class="doc-content-preview">
+      <summary>View content preview</summary>
+      <div class="doc-content">
+        <%= simple_format(truncate(design_document.content, length: 300, omission: "... (click View Gist for full content)")) %>
+      </div>
+    </details>
+  <% end %>
+</div>

@@ -1,0 +1,40 @@
+<h1><%= @model_name.humanize %></h1>
+
+<p><%= link_to "← Back to Ralph Home", ralph_root_path %></p>
+
+<% if @records.any? %>
+  <table border="1" cellpadding="10" cellspacing="0">
+    <thead>
+      <tr>
+        <% @records.first.attributes.keys.each do |attr| %>
+          <th><%= attr.humanize %></th>
+        <% end %>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @records.each do |record| %>
+        <tr>
+          <% record.attributes.each do |attr, value| %>
+            <td>
+              <% if value.is_a?(String) && value.length > 100 %>
+                <%= value.truncate(100) %>
+              <% elsif value.is_a?(Time) || value.is_a?(ActiveSupport::TimeWithZone) %>
+                <%= value.strftime("%Y-%m-%d %H:%M:%S") %>
+              <% else %>
+                <%= value %>
+              <% end %>
+            </td>
+          <% end %>
+          <td>
+            <%= link_to "View", ralph_model_record_path(model_name: @model_name, id: record.id) %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <p><em>Showing <%= @records.count %> most recent records</em></p>
+<% else %>
+  <p>No records found.</p>
+<% end %>

@@ -1,0 +1,61 @@
+<div class="root-issue-container">
+  <h1>Root Issues Overview</h1>
+
+  <p>
+    <%= link_to "← Back to Ralph Home", ralph_root_path %>
+  </p>
+
+  <% if @root_issues.empty? %>
+    <div class="empty-state">
+      <p>No root issues found.</p>
+    </div>
+  <% else %>
+    <table class="root-issues-table" border="1" cellpadding="10" cellspacing="0">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Title</th>
+          <th>State</th>
+          <th>GitHub</th>
+          <th>Child Issues</th>
+          <th>PRs</th>
+          <th>Last Updated</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @root_issues.each do |root_issue| %>
+          <% summary = root_issue_summary_metrics(root_issue) %>
+          <tr>
+            <td><%= root_issue.id %></td>
+            <td>
+              <strong><%= root_issue.title || "Untitled" %></strong>
+              <% if root_issue.body.present? %>
+                <br>
+                <small class="text-muted"><%= truncate_with_tooltip(root_issue.body, 100) %></small>
+              <% end %>
+            </td>
+            <td><%= issue_state_badge(root_issue.state) %></td>
+            <td><%= github_issue_link(root_issue) %></td>
+            <td class="text-center"><%= summary[:children] %></td>
+            <td class="text-center"><%= summary[:pull_requests] %></td>
+            <td>
+              <% if root_issue.updated_at %>
+                <%= format_timestamp(root_issue.updated_at) %>
+              <% else %>
+                N/A
+              <% end %>
+            </td>
+            <td>
+              <%= link_to "View Details", ralph_issue_assignment_path(root_issue), class: "btn-primary" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <div class="summary-info">
+      <p>Total root issues: <%= @root_issues.count %></p>
+    </div>
+  <% end %>
+</div>

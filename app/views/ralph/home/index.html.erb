@@ -1,0 +1,17 @@
+<h1>Ralph Database Viewer</h1>
+
+<div style="background: #e8f4ff; padding: 15px; border-radius: 6px; margin-bottom: 20px; border-left: 4px solid #0366d6;">
+  <h2 style="margin-top: 0; font-size: 18px;">📊 Issues Overview</h2>
+  <p style="margin-bottom: 10px;">View hierarchical issue tracking with design documents and pull requests. Drill down into any issue to see its subtree.</p>
+  <%= link_to "View Issues →", ralph_issue_assignments_path, style: "color: #0366d6; font-weight: 600; text-decoration: none;" %>
+</div>
+
+<p>Browse the Ralph database tables below:</p>
+
+<ul>
+  <% @models.each do |model| %>
+    <li>
+      <%= link_to model.humanize, ralph_model_path(model_name: model) %>
+    </li>
+  <% end %>
+</ul>

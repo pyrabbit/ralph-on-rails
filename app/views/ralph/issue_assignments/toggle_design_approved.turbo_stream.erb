@@ -1,0 +1,13 @@
+<%= turbo_stream.update "design_approval_frame" do %>
+  <div class="design-approval-toggle-container">
+    <%= button_to toggle_design_approved_ralph_issue_assignment_path(@issue),
+                  method: :post,
+                  class: "design-approval-button #{@label_active ? 'active' : ''}" do %>
+      <span class="button-icon"><%= @label_active ? '✓' : '○' %></span>
+      <span class="button-text">Design Approved</span>
+    <% end %>
+    <span class="status-message success">
+      <%= @label_active ? "Label added" : "Label removed" %>
+    </span>
+  </div>
+<% end %>

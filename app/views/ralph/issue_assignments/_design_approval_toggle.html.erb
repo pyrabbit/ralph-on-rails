@@ -1,0 +1,10 @@
+<%= turbo_frame_tag "design_approval_frame" do %>
+  <div class="design-approval-toggle-container">
+    <%= button_to toggle_design_approved_ralph_issue_assignment_path(@issue),
+                  method: :post,
+                  class: "design-approval-button #{@has_design_approved_label ? 'active' : ''}" do %>
+      <span class="button-icon"><%= @has_design_approved_label ? '✓' : '○' %></span>
+      <span class="button-text">Design Approved</span>
+    <% end %>
+  </div>
+<% end %>

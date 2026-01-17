@@ -1,0 +1,63 @@
+<% nesting_level ||= 0 %>
+<% is_last ||= false %>
+<%
+  docs_count = child_issue.design_documents.count
+  prs_count = child_issue.pull_requests.count
+  docs_approved = child_issue.design_documents.where.not(approved_at: nil).count
+  prs_merged = child_issue.pull_requests.where(state: 'merged').count
+  prs_open = child_issue.pull_requests.where(state: ['open', 'draft']).count
+  prs_issues = child_issue.pull_requests.where("unresolved_comments_count > 0").count
+  has_children = child_issue.child_issues.any?
+%>
+
+<div class="tree-item" data-level="<%= nesting_level %>">
+  <div class="tree-line">
+    <span class="tree-branch"><%= is_last ? '└─' : '├─' %></span>
+
+    <span class="tree-icon"><%= has_children ? '📁' : '📄' %></span>
+
+    <span class="tree-title">
+      <% if child_issue.merge_order %>
+        <span class="order-badge">#<%= child_issue.merge_order %></span>
+      <% end %>
+      <%= link_to (child_issue.title || "Untitled"), ralph_issue_assignment_path(child_issue), class: "tree-title-link" %>
+    </span>
+
+    <span class="tree-meta">
+      <%= issue_state_badge(child_issue.state) %>
+
+      <% if docs_count > 0 %>
+        <span class="count-badge docs" title="<%= docs_count %> design doc(s), <%= docs_approved %> approved">
+          D:<%= docs_count %>
+          <% if docs_approved > 0 %>✓<%= docs_approved %>
+          <% end %>
+        </span>
+      <% end %>
+
+      <% if prs_count > 0 %>
+        <span class="count-badge prs <%= 'has-issues' if prs_issues > 0 %>" title="<%= prs_merged %> merged, <%= prs_open %> open, <%= prs_issues %> with issues">
+          PR:<%= prs_count %>
+          <% if prs_merged > 0 %>✓<%= prs_merged %>
+          <% end %>
+          <% if prs_issues > 0 %>⚠
+          <% end %>
+        </span>
+      <% end %>
+
+      <%= github_issue_link(child_issue) %>
+    </span>
+  </div>
+
+  <% if has_children %>
+    <div class="tree-children">
+      <% children = child_issue.child_issues.order(:merge_order).to_a %>
+      <% children.each_with_index do |nested_child, index| %>
+        <%= render partial: "child_issue_card", locals: {
+          child_issue: nested_child,
+          nesting_level: nesting_level + 1,
+          is_last: index == children.length - 1
+        } %>
+      <% end %>
+    </div>
+  <% end %>
+</div>

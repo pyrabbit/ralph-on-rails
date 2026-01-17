@@ -1,0 +1,32 @@
+<div class="pr-card">
+  <div class="pr-card-header">
+    <div class="pr-title">
+      <% if pull_request.github_pr_number %>
+        <%= link_to "PR ##{pull_request.github_pr_number}", pull_request.url, target: "_blank", rel: "noopener noreferrer", class: "pr-link" %>
+      <% else %>
+        <span class="text-muted">PR (no number)</span>
+      <% end %>
+      <% if pull_request.title.present? %>
+        - <%= truncate_with_tooltip(pull_request.title, 80) %>
+      <% end %>
+    </div>
+    <div class="pr-state">
+      <%= pr_state_badge(pull_request.state) %>
+    </div>
+  </div>
+
+  <% if pull_request.unresolved_comments_count && pull_request.unresolved_comments_count > 0 %>
+    <div class="pr-comments-warning">
+      ⚠️ <%= pull_request.unresolved_comments_count %> unresolved comment<%= pull_request.unresolved_comments_count > 1 ? 's' : '' %>
+    </div>
+  <% end %>
+
+  <% if pull_request.created_at %>
+    <div class="pr-metadata">
+      Created <%= format_timestamp(pull_request.created_at) %>
+      <% if pull_request.updated_at && pull_request.updated_at != pull_request.created_at %>
+        • Updated <%= format_timestamp(pull_request.updated_at) %>
+      <% end %>
+    </div>
+  <% end %>
+</div>

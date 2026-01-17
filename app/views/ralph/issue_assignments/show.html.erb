@@ -1,0 +1,103 @@
+<div class="root-issue-container">
+  <div class="breadcrumb">
+    <%= link_to "Ralph Home", ralph_root_path %> /
+    <%= link_to "Issues", ralph_issue_assignments_path %> /
+    <% if @issue.parent_issue %>
+      <%= link_to (@issue.parent_issue.title || "Issue ##{@issue.parent_issue.id}"), ralph_issue_assignment_path(@issue.parent_issue) %> /
+    <% end %>
+    Issue #<%= @issue.id %>
+  </div>
+
+  <div class="root-issue-header">
+    <h1>
+      <%= @issue.title || "Untitled Issue" %>
+      <%= github_issue_link(@issue) %>
+    </h1>
+    <div class="header-meta">
+      <%= issue_state_badge(@issue.state) %>
+    </div>
+  </div>
+
+  <div class="metrics-section">
+    <%= render partial: "metrics_dashboard", locals: { metrics: @metrics } %>
+  </div>
+
+  <% if @active_design_doc %>
+    <div class="active-design-doc">
+      <div class="design-doc-header">
+        <h2>📋 Active Design Document</h2>
+        <div class="design-doc-meta">
+          <%= doc_status_badge(@active_design_doc.status, @active_design_doc.approved?) %>
+
+          <%# NEW: Add design approval toggle %>
+          <% if @github_available %>
+            <%= render partial: "design_approval_toggle" %>
+          <% end %>
+
+          <% if @active_design_doc.gist_url %>
+            <%= link_to "View Gist →", @active_design_doc.gist_url, target: "_blank", class: "gist-link" %>
+          <% end %>
+          <span class="doc-timestamp"><%= format_timestamp(@active_design_doc.created_at) %></span>
+        </div>
+      </div>
+      <% if @active_design_doc.content.present? %>
+        <div class="design-doc-content markdown-content">
+          <%= markdown(@active_design_doc.content) %>
+        </div>
+      <% else %>
+        <div class="empty-state">
+          <p>No content available.</p>
+        </div>
+      <% end %>
+      <% if @issue.design_documents.count > 1 %>
+        <details class="other-docs-details">
+          <summary class="other-docs-summary">
+            View <%= @issue.design_documents.count - 1 %> other design document<%= @issue.design_documents.count - 1 == 1 ? '' : 's' %>
+          </summary>
+          <div class="design-documents-list">
+            <% @issue.design_documents.order(created_at: :desc).offset(1).each do |doc| %>
+              <%= render partial: "design_document_card", locals: { design_document: doc } %>
+            <% end %>
+          </div>
+        </details>
+      <% end %>
+    </div>
+  <% end %>
+
+  <% if @issue.body.present? %>
+    <div class="issue-description">
+      <h3>📝 Issue Description</h3>
+      <div class="markdown-content">
+        <%= markdown(@issue.body) %>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="child-issues-section">
+    <h2>🔗 Issue Tree</h2>
+
+    <% if @issue.child_issues.empty? %>
+      <div class="empty-state">
+        <p>No child issues.</p>
+      </div>
+    <% else %>
+      <div class="tree-container">
+        <% children = @issue.child_issues.order(:merge_order).to_a %>
+        <% children.each_with_index do |child, index| %>
+          <%= render partial: "child_issue_card", locals: {
+            child_issue: child,
+            nesting_level: 0,
+            is_last: index == children.length - 1
+          } %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="back-links">
+    <p>
+      <%= link_to "← Back to Issues", ralph_issue_assignments_path %> |
+      <%= link_to "← Back to Ralph Home", ralph_root_path %>
+    </p>
+  </div>
+</div>

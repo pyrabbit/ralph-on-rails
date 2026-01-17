@@ -1,0 +1,59 @@
+<h1><%= @model_name.singularize.humanize %> #<%= @record.id %></h1>
+
+<p>
+  <%= link_to "← Back to #{@model_name.humanize}", ralph_model_path(model_name: @model_name) %> |
+  <%= link_to "← Back to Ralph Home", ralph_root_path %>
+</p>
+
+<table border="1" cellpadding="10" cellspacing="0">
+  <tbody>
+    <% @record.attributes.each do |attr, value| %>
+      <tr>
+        <th style="text-align: right;"><%= attr.humanize %></th>
+        <td>
+          <% if value.is_a?(Time) || value.is_a?(ActiveSupport::TimeWithZone) %>
+            <%= value.strftime("%Y-%m-%d %H:%M:%S %Z") %>
+          <% elsif value.is_a?(String) && value.length > 500 %>
+            <pre style="white-space: pre-wrap; word-wrap: break-word; max-width: 800px;"><%= value %></pre>
+          <% elsif value.nil? %>
+            <em>nil</em>
+          <% else %>
+            <%= value %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<% # Display associations if they exist %>
+<% if @record.class.reflect_on_all_associations.any? %>
+  <h2>Associations</h2>
+  <ul>
+    <% @record.class.reflect_on_all_associations.each do |association| %>
+      <li>
+        <strong><%= association.name.to_s.humanize %>:</strong>
+        <% begin %>
+          <% related = @record.send(association.name) %>
+          <% if related.is_a?(ActiveRecord::Relation) || related.is_a?(Array) %>
+            <%= related.count %> record(s)
+            <% model_key = Ralph::ModelsController::ALLOWED_MODELS.key(related.klass) %>
+            <% if model_key %>
+              - <%= link_to "View all", ralph_model_path(model_name: model_key) %>
+            <% end %>
+          <% elsif related %>
+            ID: <%= related.id %>
+            <% model_key = Ralph::ModelsController::ALLOWED_MODELS.key(related.class) %>
+            <% if model_key %>
+              - <%= link_to "View", ralph_model_record_path(model_name: model_key, id: related.id) %>
+            <% end %>
+          <% else %>
+            <em>none</em>
+          <% end %>
+        <% rescue => e %>
+          <em>Error loading association: <%= e.message %></em>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>

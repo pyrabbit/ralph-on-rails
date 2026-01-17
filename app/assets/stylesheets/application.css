@@ -1,0 +1,1176 @@
+/*
+ * This is a manifest file that'll be compiled into application.css.
+ *
+ * With Propshaft, assets are served efficiently without preprocessing steps. You can still include
+ * application-wide styles in this file, but keep in mind that CSS precedence will follow the standard
+ * cascading order, meaning styles declared later in the document or manifest will override earlier ones,
+ * depending on specificity.
+ *
+ * Consider organizing styles into separate files for maintainability.
+ */
+
+/* Root Issue Management Styles */
+
+/* Layout and Container */
+.root-issue-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+.breadcrumb {
+  margin-bottom: 20px;
+  color: #666;
+  font-size: 14px;
+}
+
+.breadcrumb a {
+  color: #0066cc;
+  text-decoration: none;
+}
+
+.breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+/* Root Issue Header */
+.root-issue-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #e1e4e8;
+}
+
+.root-issue-header h1 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.header-meta {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.root-issue-description {
+  background: #f6f8fa;
+  padding: 15px;
+  border-radius: 6px;
+  margin-bottom: 30px;
+}
+
+.root-issue-description h3 {
+  margin-top: 0;
+}
+
+/* Metrics Dashboard */
+.metrics-section {
+  margin: 20px 0;
+}
+
+.metrics-section h2 {
+  font-size: 16px;
+  margin-bottom: 10px;
+  color: #24292e;
+}
+
+.metrics-dashboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin: 12px 0;
+}
+
+.metric-card {
+  background: white;
+  border: 1px solid #e1e4e8;
+  border-radius: 6px;
+  padding: 12px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.metric-label {
+  font-size: 11px;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.metric-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: #24292e;
+  margin-bottom: 8px;
+}
+
+.metric-breakdown {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #e1e4e8;
+}
+
+.metric-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 3px 0;
+  font-size: 11px;
+}
+
+.metric-highlight {
+  color: #28a745;
+  font-weight: 600;
+  margin-top: 6px;
+  font-size: 11px;
+}
+
+.metric-warning {
+  color: #d73a49;
+  font-weight: 600;
+  margin-top: 6px;
+  font-size: 11px;
+}
+
+/* Compact Metrics */
+.metrics-compact {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  background: #f6f8fa;
+  border-radius: 6px;
+  font-size: 13px;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.metrics-compact .metric-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.metrics-compact .metric-separator {
+  color: #8b949e;
+  font-weight: 300;
+}
+
+.metrics-compact .metric-highlight {
+  color: #1a7f37;
+}
+
+.metrics-compact .metric-warning {
+  color: #d73a49;
+  margin-top: 0;
+}
+
+/* Active Design Document */
+.active-design-doc {
+  background: white;
+  border: 2px solid #0969da;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 30px;
+}
+
+.design-doc-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e1e4e8;
+}
+
+.design-doc-header h2 {
+  margin: 0;
+  font-size: 18px;
+  color: #24292e;
+}
+
+.design-doc-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+}
+
+.gist-link {
+  color: #0969da;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.gist-link:hover {
+  text-decoration: underline;
+}
+
+.doc-timestamp {
+  color: #666;
+  font-size: 11px;
+}
+
+.design-doc-content {
+  margin-top: 15px;
+}
+
+.other-docs-details {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #e1e4e8;
+}
+
+.other-docs-summary {
+  cursor: pointer;
+  color: #0969da;
+  font-weight: 600;
+  font-size: 13px;
+  padding: 8px 0;
+}
+
+.other-docs-summary:hover {
+  text-decoration: underline;
+}
+
+/* Issue Description */
+.issue-description {
+  background: #f6f8fa;
+  padding: 20px;
+  border-radius: 6px;
+  margin-bottom: 30px;
+}
+
+.issue-description h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 16px;
+  color: #24292e;
+}
+
+/* Markdown Content Styling */
+.markdown-content {
+  line-height: 1.6;
+  color: #24292e;
+}
+
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3,
+.markdown-content h4,
+.markdown-content h5,
+.markdown-content h6 {
+  margin-top: 24px;
+  margin-bottom: 12px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.markdown-content h1 { font-size: 28px; border-bottom: 1px solid #e1e4e8; padding-bottom: 8px; }
+.markdown-content h2 { font-size: 22px; border-bottom: 1px solid #e1e4e8; padding-bottom: 6px; }
+.markdown-content h3 { font-size: 18px; }
+.markdown-content h4 { font-size: 16px; }
+.markdown-content h5 { font-size: 14px; }
+.markdown-content h6 { font-size: 13px; color: #666; }
+
+.markdown-content p {
+  margin-top: 0;
+  margin-bottom: 12px;
+}
+
+.markdown-content ul,
+.markdown-content ol {
+  margin-top: 0;
+  margin-bottom: 12px;
+  padding-left: 24px;
+}
+
+.markdown-content li {
+  margin-bottom: 4px;
+}
+
+.markdown-content code {
+  background: #f6f8fa;
+  border-radius: 3px;
+  padding: 2px 6px;
+  font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, monospace;
+  font-size: 12px;
+}
+
+.markdown-content pre {
+  background: #f6f8fa;
+  border-radius: 6px;
+  padding: 12px;
+  overflow-x: auto;
+  margin-bottom: 12px;
+}
+
+.markdown-content pre code {
+  background: none;
+  padding: 0;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.markdown-content blockquote {
+  border-left: 4px solid #d0d7de;
+  padding-left: 16px;
+  margin-left: 0;
+  color: #666;
+  margin-bottom: 12px;
+}
+
+.markdown-content table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.markdown-content table th,
+.markdown-content table td {
+  border: 1px solid #d0d7de;
+  padding: 8px 12px;
+  text-align: left;
+}
+
+.markdown-content table th {
+  background: #f6f8fa;
+  font-weight: 600;
+}
+
+.markdown-content a {
+  color: #0969da;
+  text-decoration: none;
+}
+
+.markdown-content a:hover {
+  text-decoration: underline;
+}
+
+.markdown-content hr {
+  border: none;
+  border-top: 1px solid #e1e4e8;
+  margin: 20px 0;
+}
+
+/* Tree View - Complete Redesign */
+.tree-item {
+  font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono', monospace;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.tree-line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 0;
+  min-height: 24px;
+}
+
+.tree-line:hover {
+  background: #f6f8fa;
+}
+
+.tree-branch {
+  color: #8b949e;
+  font-size: 12px;
+  width: 20px;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.tree-icon {
+  font-size: 14px;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.tree-title {
+  font-weight: 500;
+  color: #24292e;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tree-title-link {
+  color: #0969da;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.tree-title-link:hover {
+  text-decoration: underline;
+  color: #0550ae;
+}
+
+.tree-meta {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-shrink: 0;
+  margin-left: 8px;
+  font-size: 11px;
+}
+
+.tree-children {
+  margin-left: 20px;
+}
+
+.order-badge {
+  background: #f6f8fa;
+  padding: 2px 5px;
+  border-radius: 3px;
+  font-size: 11px;
+  color: #57606a;
+  font-weight: 600;
+}
+
+.count-badge {
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 11px;
+  font-weight: 600;
+  background: #e3e8f0;
+  color: #444d56;
+  cursor: help;
+}
+
+.count-badge.docs {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.count-badge.prs {
+  background: #d1ecf1;
+  color: #0c5460;
+}
+
+.count-badge.prs.has-issues {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.tree-expand {
+  margin-left: 4px;
+}
+
+.tree-details {
+  display: inline-block;
+}
+
+.tree-details summary {
+  cursor: pointer;
+  color: #0969da;
+  font-size: 18px;
+  user-select: none;
+  list-style: none;
+  padding: 0 4px;
+  line-height: 1;
+}
+
+.tree-details summary::-webkit-details-marker {
+  display: none;
+}
+
+.tree-details summary:hover {
+  background: #e6f1ff;
+  border-radius: 3px;
+}
+
+.tree-dropdown {
+  position: absolute;
+  z-index: 100;
+  background: white;
+  border: 1px solid #d0d7de;
+  border-radius: 6px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  padding: 8px;
+  margin-top: 4px;
+  min-width: 300px;
+  max-width: 500px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.dd-section {
+  padding: 6px 0;
+}
+
+.dd-section:not(:last-child) {
+  border-bottom: 1px solid #e1e4e8;
+  margin-bottom: 6px;
+}
+
+.dd-section strong {
+  display: block;
+  font-size: 11px;
+  color: #57606a;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.dd-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 6px;
+  border-radius: 3px;
+  font-size: 12px;
+}
+
+.dd-item:hover {
+  background: #f6f8fa;
+}
+
+.dd-link {
+  color: #0969da;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.dd-link:hover {
+  text-decoration: underline;
+}
+
+.dd-no-link {
+  color: #8b949e;
+  font-size: 11px;
+}
+
+.dd-warning {
+  color: #9a6700;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.dd-time {
+  color: #57606a;
+  font-size: 10px;
+  margin-left: auto;
+}
+
+.issue-state {
+  flex-shrink: 0;
+  margin-left: 15px;
+}
+
+.issue-description {
+  color: #586069;
+  margin-bottom: 15px;
+  line-height: 1.5;
+}
+
+.issue-metadata {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 15px;
+}
+
+.merge-order {
+  background: #f1f8ff;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+  color: #0366d6;
+}
+
+.issue-section {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #e1e4e8;
+}
+
+.issue-section h4 {
+  margin: 0 0 15px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #24292e;
+}
+
+.issue-empty-state {
+  padding: 20px;
+  text-align: center;
+  color: #666;
+  font-style: italic;
+}
+
+/* Nested children section */
+.nested-children-section {
+  margin-top: 8px;
+  padding-top: 0;
+}
+
+.nested-children-section h4 {
+  margin: 0 0 6px 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: #0366d6;
+}
+
+.nested-children-list {
+  margin-top: 0;
+}
+
+/* Supplementary info badges */
+.supplementary-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 6px 0 4px 0;
+  padding: 0;
+  flex-wrap: wrap;
+}
+
+.info-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  background: #f6f8fa;
+  border: 1px solid #d0d7de;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 500;
+  color: #57606a;
+}
+
+.approved-indicator {
+  color: #1a7f37;
+  font-weight: 600;
+}
+
+.warning-indicator {
+  color: #9a6700;
+  font-weight: 600;
+}
+
+/* Collapsible supplementary details */
+.supplementary-details {
+  margin-top: 6px;
+  border-top: 1px solid #e1e4e8;
+  padding-top: 6px;
+}
+
+.supplementary-summary {
+  cursor: pointer;
+  color: #0969da;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 0;
+  user-select: none;
+  list-style: none;
+}
+
+.supplementary-summary::-webkit-details-marker {
+  display: none;
+}
+
+.supplementary-summary::before {
+  content: '▶ ';
+  display: inline-block;
+  margin-right: 4px;
+  transition: transform 0.2s ease;
+  font-size: 10px;
+}
+
+.supplementary-details[open] .supplementary-summary::before {
+  transform: rotate(90deg);
+}
+
+.supplementary-summary:hover {
+  color: #0550ae;
+  text-decoration: underline;
+}
+
+.supplementary-section {
+  margin-top: 8px;
+  padding: 8px;
+  background: #f6f8fa;
+  border-radius: 4px;
+}
+
+.supplementary-section h5 {
+  margin: 0 0 6px 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: #24292e;
+}
+
+.design-documents-list-compact,
+.pull-requests-list-compact {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Design Document Cards */
+.design-documents-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.doc-card {
+  background: #fffbf0;
+  border: 1px solid #e9d8a6;
+  border-radius: 4px;
+  padding: 8px 10px;
+}
+
+.doc-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.doc-status-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.doc-link {
+  color: #0366d6;
+  text-decoration: none;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.doc-link:hover {
+  text-decoration: underline;
+}
+
+.doc-metadata {
+  font-size: 10px;
+  color: #666;
+}
+
+.doc-approval-info {
+  color: #28a745;
+  font-weight: 600;
+  font-size: 11px;
+  margin-bottom: 6px;
+}
+
+.doc-content-preview {
+  margin-top: 6px;
+}
+
+.doc-content-preview summary {
+  cursor: pointer;
+  color: #0366d6;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.doc-content-preview summary:hover {
+  text-decoration: underline;
+}
+
+.doc-content {
+  margin-top: 6px;
+  padding: 6px;
+  background: white;
+  border-radius: 3px;
+  font-size: 11px;
+  line-height: 1.5;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+/* Pull Request Cards */
+.pull-requests-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pr-card {
+  background: #f0f9ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 4px;
+  padding: 8px 10px;
+}
+
+.pr-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.pr-title {
+  flex: 1;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.pr-link {
+  color: #0366d6;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.pr-link:hover {
+  text-decoration: underline;
+}
+
+.pr-state {
+  flex-shrink: 0;
+  margin-left: 8px;
+}
+
+.pr-comments-warning {
+  background: #fff3cd;
+  border: 1px solid #ffc107;
+  color: #856404;
+  padding: 4px 8px;
+  border-radius: 3px;
+  font-size: 10px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.pr-metadata {
+  font-size: 10px;
+  color: #666;
+}
+
+/* Badges - Compact for Tree View */
+.badge {
+  display: inline-block;
+  padding: 2px 5px;
+  font-size: 10px;
+  font-weight: 600;
+  border-radius: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  line-height: 1.3;
+}
+
+/* Issue State Badges */
+.badge-state-completed,
+.badge-state-merged {
+  background: #28a745;
+  color: white;
+}
+
+.badge-state-in-progress,
+.badge-state-implementing {
+  background: #ffc107;
+  color: #24292e;
+}
+
+.badge-state-planning {
+  background: #17a2b8;
+  color: white;
+}
+
+.badge-state-not-started,
+.badge-state-discovered {
+  background: #6c757d;
+  color: white;
+}
+
+.badge-state-blocked {
+  background: #dc3545;
+  color: white;
+}
+
+.badge-state-default {
+  background: #e1e4e8;
+  color: #24292e;
+}
+
+/* PR State Badges */
+.badge-pr-merged {
+  background: #6f42c1;
+  color: white;
+}
+
+.badge-pr-approved {
+  background: #28a745;
+  color: white;
+}
+
+.badge-pr-open {
+  background: #28a745;
+  color: white;
+}
+
+.badge-pr-draft {
+  background: #6c757d;
+  color: white;
+}
+
+.badge-pr-changes-requested {
+  background: #d73a49;
+  color: white;
+}
+
+.badge-pr-closed {
+  background: #cb2431;
+  color: white;
+}
+
+.badge-pr-default {
+  background: #e1e4e8;
+  color: #24292e;
+}
+
+/* Design Doc Status Badges */
+.badge-doc-approved {
+  background: #28a745;
+  color: white;
+}
+
+.badge-doc-published {
+  background: #0366d6;
+  color: white;
+}
+
+.badge-doc-draft {
+  background: #ffc107;
+  color: #24292e;
+}
+
+.badge-doc-default {
+  background: #e1e4e8;
+  color: #24292e;
+}
+
+/* Table Styles */
+.root-issues-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  background: white;
+}
+
+.root-issues-table th {
+  background: #f6f8fa;
+  padding: 12px;
+  text-align: left;
+  font-weight: 600;
+  border: 1px solid #d1d5da;
+}
+
+.root-issues-table td {
+  padding: 12px;
+  border: 1px solid #d1d5da;
+  vertical-align: top;
+}
+
+.root-issues-table tr:hover {
+  background: #f6f8fa;
+}
+
+/* Utility Classes */
+.text-muted {
+  color: #666;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.truncated-text {
+  cursor: help;
+  border-bottom: 1px dotted #666;
+}
+
+.empty-state {
+  padding: 40px 20px;
+  text-align: center;
+  color: #666;
+  font-style: italic;
+  background: #f6f8fa;
+  border-radius: 6px;
+}
+
+.summary-info {
+  margin-top: 20px;
+  padding: 15px;
+  background: #f6f8fa;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.back-links {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 2px solid #e1e4e8;
+}
+
+.btn-primary {
+  background: #0366d6;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 500;
+  display: inline-block;
+}
+
+.btn-primary:hover {
+  background: #0256c7;
+  text-decoration: none;
+}
+
+/* Root issue sections */
+.root-design-docs-section {
+  margin: 20px 0;
+}
+
+.child-issues-section {
+  margin: 24px 0 20px 0;
+}
+
+.child-issues-section h2 {
+  font-size: 16px;
+  margin-bottom: 10px;
+  color: #24292e;
+  font-weight: 600;
+}
+
+.tree-container {
+  background: #ffffff;
+  border: 1px solid #e1e4e8;
+  border-radius: 6px;
+  padding: 12px;
+  font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, monospace;
+}
+
+.root-supplementary-details {
+  border: 1px solid #d0d7de;
+  border-radius: 4px;
+  padding: 10px 12px;
+  background: white;
+}
+
+.root-supplementary-summary {
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  color: #24292e;
+  padding: 4px 0;
+  user-select: none;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.root-supplementary-summary::-webkit-details-marker {
+  display: none;
+}
+
+.root-supplementary-summary::before {
+  content: '▶';
+  display: inline-block;
+  margin-right: 6px;
+  transition: transform 0.2s ease;
+  color: #0969da;
+  font-size: 10px;
+}
+
+.root-supplementary-details[open] .root-supplementary-summary::before {
+  transform: rotate(90deg);
+}
+
+.root-supplementary-summary:hover {
+  color: #0969da;
+}
+
+.approved-count {
+  color: #1a7f37;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.root-supplementary-details .design-documents-list {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #e1e4e8;
+}
+
+/* Design Approval Toggle */
+.design-approval-toggle-container {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.design-approval-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  font-size: 13px;
+  font-weight: 500;
+  border: 1px solid #d0d7de;
+  border-radius: 6px;
+  background: white;
+  color: #24292e;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.design-approval-button:hover {
+  background: #f6f8fa;
+  border-color: #0969da;
+}
+
+.design-approval-button.active {
+  background: #dafbe1;
+  border-color: #1a7f37;
+  color: #0f5323;
+}
+
+.design-approval-button.active:hover {
+  background: #c4f0cb;
+}
+
+.button-icon {
+  font-size: 14px;
+  line-height: 1;
+}
+
+.button-text {
+  line-height: 1;
+}
+
+.status-message {
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 3px;
+  animation: fadeIn 0.3s ease;
+}
+
+.status-message.success {
+  color: #0f5323;
+  background-color: #d4f4dd;
+}
+
+.status-message.error {
+  color: #a0111f;
+  background-color: #ffd7d5;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
