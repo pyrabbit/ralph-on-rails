@@ -1,0 +1,16 @@
+<%= turbo_frame_tag "header_meta", class: "header-meta" do %>
+  <%= issue_state_badge(issue.state) %>
+  <% if issue.pull_requests.any? %>
+    <% issue.pull_requests.order(created_at: :desc).each do |pr| %>
+      <% if pr.github_pr_number %>
+        <%= link_to "PR ##{pr.github_pr_number}", pr.url, target: "_blank", rel: "noopener noreferrer", class: "pr-link-badge" %>
+        <%= pr_state_badge(pr.state) %>
+        <% if pr_check_statuses[pr.id] %>
+          <%= ci_status_badge(pr_check_statuses[pr.id][:status]) %>
+          <% merge_badge = merge_conflict_badge(pr_check_statuses[pr.id][:mergeable], pr_check_statuses[pr.id][:mergeable_state]) %>
+          <%= merge_badge if merge_badge %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>

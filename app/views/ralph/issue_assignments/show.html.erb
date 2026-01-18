@@ -1,3 +1,5 @@
+<%= turbo_stream_from "issue_#{@issue.id}" %>
+
 <div class="root-issue-container">
   <div class="breadcrumb">
     <%= link_to "Ralph Home", ralph_root_path %> /
@@ -13,85 +15,186 @@
       <%= @issue.title || "Untitled Issue" %>
       <%= github_issue_link(@issue) %>
     </h1>
-    <div class="header-meta">
-      <%= issue_state_badge(@issue.state) %>
-    </div>
+    <%= render partial: "header_meta", locals: { issue: @issue, pr_check_statuses: @pr_check_statuses } %>
   </div>
 
-  <div class="metrics-section">
-    <%= render partial: "metrics_dashboard", locals: { metrics: @metrics } %>
-  </div>
+  <div data-controller="tabs" data-tabs-default-tab-value="overview" class="tabs-container">
+    <nav class="tabs-nav">
+      <button data-tabs-target="tab" data-tab="overview" data-action="click->tabs#select" class="tab-button">
+        Overview
+      </button>
+      <button data-tabs-target="tab" data-tab="design" data-action="click->tabs#select" class="tab-button">
+        Design
+      </button>
+      <button data-tabs-target="tab" data-tab="prs" data-action="click->tabs#select" class="tab-button">
+        Pull Requests<% if @issue.pull_requests.any? %><span class="tab-count"><%= @issue.pull_requests.count %></span><% end %>
+      </button>
+      <button data-tabs-target="tab" data-tab="details" data-action="click->tabs#select" class="tab-button">
+        Details
+      </button>
+      <button data-tabs-target="tab" data-tab="children" data-action="click->tabs#select" class="tab-button">
+        Child Issues<% if @issue.child_issues.any? %><span class="tab-count"><%= @issue.child_issues.count %></span><% end %>
+      </button>
+      <button data-tabs-target="tab" data-tab="iterations" data-action="click->tabs#select" class="tab-button">
+        Iterations<% if @iterations&.any? %><span class="tab-count"><%= @iterations.count %></span><% end %>
+      </button>
+    </nav>
 
-  <% if @active_design_doc %>
-    <div class="active-design-doc">
-      <div class="design-doc-header">
-        <h2>📋 Active Design Document</h2>
-        <div class="design-doc-meta">
-          <%= doc_status_badge(@active_design_doc.status, @active_design_doc.approved?) %>
+    <div class="tabs-content">
+      <%# OVERVIEW TAB %>
+      <div data-tabs-target="panel" data-panel="overview" class="tab-panel">
+        <div class="metrics-section">
+          <%= render partial: "metrics_dashboard", locals: { metrics: @metrics } %>
+        </div>
 
-          <%# NEW: Add design approval toggle %>
-          <% if @github_available %>
-            <%= render partial: "design_approval_toggle" %>
-          <% end %>
+        <% if @active_design_doc %>
+          <div class="overview-card design-summary-card">
+            <div class="card-header">
+              <h3>📋 Design Document</h3>
+              <%= doc_status_badge(@active_design_doc.status, @active_design_doc.approved?) %>
+            </div>
+            <div class="card-content">
+              <div class="design-doc-meta">
+                <% if @github_available %>
+                  <%= render partial: "design_approval_toggle" %>
+                <% end %>
+                <% if @active_design_doc.gist_url %>
+                  <%= link_to "View Gist →", @active_design_doc.gist_url, target: "_blank", class: "gist-link" %>
+                <% end %>
+                <span class="doc-timestamp"><%= format_timestamp(@active_design_doc.created_at) %></span>
+              </div>
+              <button data-tabs-target="tab" data-tab="design" data-action="click->tabs#select" class="view-tab-link">
+                View Full Design →
+              </button>
+            </div>
+          </div>
+        <% end %>
 
-          <% if @active_design_doc.gist_url %>
-            <%= link_to "View Gist →", @active_design_doc.gist_url, target: "_blank", class: "gist-link" %>
-          <% end %>
-          <span class="doc-timestamp"><%= format_timestamp(@active_design_doc.created_at) %></span>
-        </div>
-      </div>
-      <% if @active_design_doc.content.present? %>
-        <div class="design-doc-content markdown-content">
-          <%= markdown(@active_design_doc.content) %>
-        </div>
-      <% else %>
-        <div class="empty-state">
-          <p>No content available.</p>
-        </div>
-      <% end %>
-      <% if @issue.design_documents.count > 1 %>
-        <details class="other-docs-details">
-          <summary class="other-docs-summary">
-            View <%= @issue.design_documents.count - 1 %> other design document<%= @issue.design_documents.count - 1 == 1 ? '' : 's' %>
-          </summary>
-          <div class="design-documents-list">
-            <% @issue.design_documents.order(created_at: :desc).offset(1).each do |doc| %>
-              <%= render partial: "design_document_card", locals: { design_document: doc } %>
+        <%= render partial: "pr_summary_card", locals: { issue: @issue, pr_check_statuses: @pr_check_statuses } %>
+
+        <div class="overview-card children-summary-card">
+          <div class="card-header">
+            <h3>🔗 Child Issues (<%= @issue.child_issues.count %>)</h3>
+          </div>
+          <div class="card-content">
+            <% if @issue.child_issues.any? %>
+              <div class="tree-container">
+                <% children = @issue.child_issues.order(:merge_order).to_a %>
+                <% children.each_with_index do |child, index| %>
+                  <%= render partial: "child_issue_card", locals: {
+                    child_issue: child,
+                    nesting_level: 0,
+                    is_last: index == children.length - 1
+                  } %>
+                <% end %>
+              </div>
+            <% else %>
+              <p class="empty-message">No child issues</p>
             <% end %>
           </div>
-        </details>
-      <% end %>
-    </div>
-  <% end %>
-
-  <% if @issue.body.present? %>
-    <div class="issue-description">
-      <h3>📝 Issue Description</h3>
-      <div class="markdown-content">
-        <%= markdown(@issue.body) %>
+        </div>
       </div>
-    </div>
-  <% end %>
 
-  <div class="child-issues-section">
-    <h2>🔗 Issue Tree</h2>
+      <%# DESIGN TAB %>
+      <div data-tabs-target="panel" data-panel="design" class="tab-panel hidden">
+        <% if @active_design_doc %>
+          <div class="active-design-doc">
+            <div class="design-doc-header">
+              <h2>📋 Active Design Document</h2>
+              <div class="design-doc-meta">
+                <%= doc_status_badge(@active_design_doc.status, @active_design_doc.approved?) %>
 
-    <% if @issue.child_issues.empty? %>
-      <div class="empty-state">
-        <p>No child issues.</p>
-      </div>
-    <% else %>
-      <div class="tree-container">
-        <% children = @issue.child_issues.order(:merge_order).to_a %>
-        <% children.each_with_index do |child, index| %>
-          <%= render partial: "child_issue_card", locals: {
-            child_issue: child,
-            nesting_level: 0,
-            is_last: index == children.length - 1
-          } %>
+                <% if @github_available %>
+                  <%= render partial: "design_approval_toggle" %>
+                <% end %>
+
+                <% if @active_design_doc.gist_url %>
+                  <%= link_to "View Gist →", @active_design_doc.gist_url, target: "_blank", class: "gist-link" %>
+                <% end %>
+                <span class="doc-timestamp"><%= format_timestamp(@active_design_doc.created_at) %></span>
+              </div>
+            </div>
+            <% if @active_design_doc.content.present? %>
+              <div class="design-doc-content markdown-content">
+                <%= markdown(@active_design_doc.content) %>
+              </div>
+            <% else %>
+              <div class="empty-state">
+                <p>No content available.</p>
+              </div>
+            <% end %>
+            <% if @issue.design_documents.count > 1 %>
+              <details class="other-docs-details">
+                <summary class="other-docs-summary">
+                  View <%= @issue.design_documents.count - 1 %> other design document<%= @issue.design_documents.count - 1 == 1 ? '' : 's' %>
+                </summary>
+                <div class="design-documents-list">
+                  <% @issue.design_documents.order(created_at: :desc).offset(1).each do |doc| %>
+                    <%= render partial: "design_document_card", locals: { design_document: doc } %>
+                  <% end %>
+                </div>
+              </details>
+            <% end %>
+          </div>
+        <% else %>
+          <div class="empty-state">
+            <p>No design document available.</p>
+          </div>
         <% end %>
       </div>
-    <% end %>
+
+      <%# PULL REQUESTS TAB %>
+      <div data-tabs-target="panel" data-panel="prs" class="tab-panel hidden">
+        <%= render partial: "pr_list_full", locals: { issue: @issue, pr_check_statuses: @pr_check_statuses } %>
+      </div>
+
+      <%# DETAILS TAB %>
+      <div data-tabs-target="panel" data-panel="details" class="tab-panel hidden">
+        <% if @issue.body.present? %>
+          <div class="issue-description">
+            <h3>📝 Issue Description</h3>
+            <div class="markdown-content">
+              <%= markdown(@issue.body) %>
+            </div>
+          </div>
+        <% else %>
+          <div class="empty-state">
+            <p>No description available.</p>
+          </div>
+        <% end %>
+      </div>
+
+      <%# CHILD ISSUES TAB %>
+      <div data-tabs-target="panel" data-panel="children" class="tab-panel hidden">
+        <div class="child-issues-section">
+          <h2>🔗 Issue Tree</h2>
+
+          <% if @issue.child_issues.empty? %>
+            <div class="empty-state">
+              <p>No child issues.</p>
+            </div>
+          <% else %>
+            <div class="tree-container">
+              <% children = @issue.child_issues.order(:merge_order).to_a %>
+              <% children.each_with_index do |child, index| %>
+                <%= render partial: "child_issue_card", locals: {
+                  child_issue: child,
+                  nesting_level: 0,
+                  is_last: index == children.length - 1
+                } %>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <%# ITERATIONS TAB %>
+      <div data-tabs-target="panel" data-panel="iterations" class="tab-panel hidden">
+        <%= turbo_frame_tag "iterations_list" do %>
+          <%= render partial: "iterations_list", locals: { iterations: @iterations } %>
+        <% end %>
+      </div>
+    </div>
   </div>
 
   <div class="back-links">

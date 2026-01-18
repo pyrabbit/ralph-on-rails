@@ -1,0 +1,32 @@
+<%= turbo_frame_tag "live_metrics" do %>
+  <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 8px; color: white; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+    <h3 style="margin-top: 0; font-size: 16px; opacity: 0.9; font-weight: 500;">Live System Metrics</h3>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px;">
+      <div style="background: rgba(255, 255, 255, 0.15); padding: 15px; border-radius: 6px; backdrop-filter: blur(10px);">
+        <div style="font-size: 28px; font-weight: 700; margin-bottom: 5px;"><%= metrics[:total_issues] %></div>
+        <div style="font-size: 13px; opacity: 0.9;">Total Issues</div>
+      </div>
+
+      <div style="background: rgba(255, 255, 255, 0.15); padding: 15px; border-radius: 6px; backdrop-filter: blur(10px);">
+        <div style="font-size: 28px; font-weight: 700; margin-bottom: 5px;"><%= metrics[:root_issues] %></div>
+        <div style="font-size: 13px; opacity: 0.9;">Root Issues</div>
+      </div>
+
+      <div style="background: rgba(255, 255, 255, 0.15); padding: 15px; border-radius: 6px; backdrop-filter: blur(10px);">
+        <div style="font-size: 28px; font-weight: 700; margin-bottom: 5px;"><%= metrics[:open_prs] %></div>
+        <div style="font-size: 13px; opacity: 0.9;">Open Pull Requests</div>
+      </div>
+
+      <div style="background: rgba(255, 255, 255, 0.15); padding: 15px; border-radius: 6px; backdrop-filter: blur(10px);">
+        <div style="font-size: 28px; font-weight: 700; margin-bottom: 5px;"><%= metrics[:design_docs] %></div>
+        <div style="font-size: 13px; opacity: 0.9;">Design Documents</div>
+      </div>
+    </div>
+
+    <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255, 255, 255, 0.2); font-size: 12px; opacity: 0.8; display: flex; justify-content: space-between; align-items: center;">
+      <span>Live updates via Turbo Streams</span>
+      <span>Last updated: <%= Time.current.strftime("%I:%M:%S %p") %></span>
+    </div>
+  </div>
+<% end %>

@@ -6,6 +6,7 @@ module Ralph
     has_many :task_queue_items, class_name: "Ralph::TaskQueueItem", foreign_key: :issue_assignment_id
     has_many :design_doc_comments, class_name: "Ralph::DesignDocComment", foreign_key: :issue_assignment_id
     has_many :design_documents, class_name: "Ralph::DesignDocument", foreign_key: :issue_assignment_id
+    has_many :iterations, -> { order(started_at: :desc) }, through: :task_queue_items, class_name: "Ralph::Iteration"
 
     scope :active, -> { where(state: %w[discovered planning implementing]) }
     scope :not_started, -> { where(state: "discovered") }

@@ -1,0 +1,39 @@
+# Test fixtures for WebhookEvent model
+
+pr_webhook_acme_web:
+  project: acme_web
+  delivery_id: webhook-delivery-001
+  event_type: pull_request
+  task_type: pr_maintenance
+  priority: 0
+  payload: { pr_number: 42, action: "synchronize" }
+  task_metadata: { pr_number: 42, reason: "unmergeable" }
+  processing_status: processed
+  processed_at: <%= 1.hour.ago %>
+  created_at: <%= 2.hours.ago %>
+  updated_at: <%= 1.hour.ago %>
+
+check_webhook_acme_api:
+  project: acme_api
+  delivery_id: webhook-delivery-002
+  event_type: check_run
+  task_type: pr_maintenance
+  priority: 0
+  payload: { check_name: "Tests", conclusion: "failure" }
+  task_metadata: { pr_number: 123, check_name: "Tests" }
+  processing_status: processed
+  processed_at: <%= 30.minutes.ago %>
+  created_at: <%= 1.hour.ago %>
+  updated_at: <%= 30.minutes.ago %>
+
+pending_webhook:
+  project: acme_web
+  delivery_id: webhook-delivery-003
+  event_type: issues
+  task_type: new_issue
+  priority: 3
+  payload: { issue_number: 456, action: "opened" }
+  task_metadata: { issue_number: 456, labels: ["help wanted", "bug"] }
+  processing_status: pending
+  created_at: <%= 5.minutes.ago %>
+  updated_at: <%= 5.minutes.ago %>

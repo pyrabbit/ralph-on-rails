@@ -1,0 +1,48 @@
+<div style="max-width: 1200px; margin: 0 auto; padding: 40px 20px;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px;">
+    <h1 style="margin: 0;">Your Ralph Projects</h1>
+    <%= link_to "New Project", new_project_path, style: "background: #0969da; color: white; padding: 10px 20px; text-decoration: none; border-radius: 6px; font-weight: 600;" %>
+  </div>
+
+  <% if @projects.any? %>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 20px;">
+      <% @projects.each do |project| %>
+        <div style="border: 1px solid #d0d7de; border-radius: 6px; padding: 20px; background: white;">
+          <h2 style="margin: 0 0 10px 0; font-size: 20px;">
+            <%= link_to project.name, ralph_root_path(project_id: project.slug), style: "color: #0969da; text-decoration: none;" %>
+          </h2>
+          <p style="color: #656d76; margin: 0 0 15px 0; font-size: 14px;">
+            <%= project.github_repository %>
+          </p>
+          <div style="display: flex; gap: 15px; margin-bottom: 15px; font-size: 14px; color: #656d76;">
+            <span><%= pluralize(project.issue_assignments_count, 'issue') %></span>
+            <span><%= pluralize(project.pull_requests_count, 'PR') %></span>
+          </div>
+          <div style="margin-bottom: 15px;">
+            <% if project.active? %>
+              <span style="display: inline-block; padding: 4px 8px; background: #dafbe1; color: #1a7f37; border-radius: 12px; font-size: 12px; font-weight: 600;">
+                Active
+              </span>
+            <% else %>
+              <span style="display: inline-block; padding: 4px 8px; background: #d1d9e0; color: #656d76; border-radius: 12px; font-size: 12px; font-weight: 600;">
+                Inactive
+              </span>
+            <% end %>
+          </div>
+          <div style="display: flex; gap: 10px;">
+            <%= link_to "View", ralph_root_path(project_id: project.slug), style: "padding: 6px 12px; background: #f6f8fa; border: 1px solid #d0d7de; border-radius: 6px; text-decoration: none; color: #24292f; font-size: 14px;" %>
+            <% if can_manage_project_for?(project) %>
+              <%= link_to "Settings", edit_project_path(project_id: project.slug), style: "padding: 6px 12px; background: #f6f8fa; border: 1px solid #d0d7de; border-radius: 6px; text-decoration: none; color: #24292f; font-size: 14px;" %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div style="text-align: center; padding: 80px 20px; border: 2px dashed #d0d7de; border-radius: 6px;">
+      <h2 style="color: #656d76; font-size: 24px; margin: 0 0 10px 0;">No projects yet</h2>
+      <p style="color: #656d76; margin: 0 0 30px 0;">Create your first Ralph project to get started with autonomous software engineering.</p>
+      <%= link_to "Create Project", new_project_path, style: "display: inline-block; background: #0969da; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 16px;" %>
+    </div>
+  <% end %>
+</div>

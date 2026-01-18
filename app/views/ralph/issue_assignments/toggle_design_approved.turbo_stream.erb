@@ -4,10 +4,10 @@
                   method: :post,
                   class: "design-approval-button #{@label_active ? 'active' : ''}" do %>
       <span class="button-icon"><%= @label_active ? '✓' : '○' %></span>
-      <span class="button-text">Design Approved</span>
+      <span class="button-text"><%= @label_active ? 'Design Approved' : 'Approve Design' %></span>
     <% end %>
     <span class="status-message success">
-      <%= @label_active ? "Label added" : "Label removed" %>
+      <%= @label_active ? "Design approved!" : "Approval removed" %>
     </span>
   </div>
 <% end %>

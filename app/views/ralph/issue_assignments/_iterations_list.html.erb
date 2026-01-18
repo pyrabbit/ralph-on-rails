@@ -1,0 +1,66 @@
+<%= turbo_frame_tag "iterations_list" do %>
+  <div class="iterations-section">
+    <h2>🔄 Iterations</h2>
+
+    <% if iterations&.any? %>
+      <div class="iterations-list">
+        <% iterations.each do |iteration| %>
+          <div class="iteration-card">
+            <div class="iteration-header">
+              <h3>
+                Iteration #<%= iteration.iteration_number %>
+                <% if iteration.status %>
+                  <% badge_class = case iteration.status
+                    when "success" then "badge-iteration-success"
+                    when "failure" then "badge-iteration-failure"
+                    when "no_work" then "badge-iteration-idle"
+                    when "running" then "badge-iteration-running"
+                    else "badge-iteration-default"
+                  end %>
+                  <span class="badge <%= badge_class %>"><%= iteration.status.humanize %></span>
+                <% end %>
+              </h3>
+              <div class="iteration-meta">
+                <% if iteration.started_at %>
+                  <span class="meta-item">Started: <%= format_timestamp(iteration.started_at) %></span>
+                <% end %>
+                <% if iteration.completed_at %>
+                  <span class="meta-item">Completed: <%= format_timestamp(iteration.completed_at) %></span>
+                <% end %>
+                <% if iteration.duration %>
+                  <span class="meta-item">Duration: <%= distance_of_time_in_words(iteration.duration) %></span>
+                <% end %>
+              </div>
+            </div>
+
+            <div class="iteration-content">
+              <% if iteration.work_type %>
+                <div class="iteration-detail">
+                  <strong>Work Type:</strong> <%= iteration.work_type.humanize %>
+                </div>
+              <% end %>
+
+              <% if iteration.error_message.present? %>
+                <div class="iteration-error">
+                  <strong>Error:</strong>
+                  <pre><%= iteration.error_message %></pre>
+                </div>
+              <% end %>
+
+              <% if iteration.metadata.present? %>
+                <details class="iteration-metadata">
+                  <summary>View Metadata</summary>
+                  <pre><%= JSON.pretty_generate(iteration.metadata) %></pre>
+                </details>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="empty-state">
+        <p>No iterations found for this issue.</p>
+      </div>
+    <% end %>
+  </div>
+<% end %>

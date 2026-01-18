@@ -184,4 +184,102 @@ module RalphHelper
       pull_requests: pr_count
     }
   end
+
+  # Fetch GitHub Actions status for a PR
+  # Returns hash with :status (:success, :failure, :pending, :unknown), :details, :mergeable, :mergeable_state
+  def fetch_pr_checks_status(repository, pr_number)
+    return { status: :unknown, details: [], mergeable: nil, mergeable_state: nil } unless pr_number && repository
+
+    begin
+      client = Ralph::GitHub::Client.new
+
+      # Fetch PR to get head SHA and merge status
+      pr_result = client.fetch_pull_request(repository, pr_number)
+      return { status: :unknown, details: [], mergeable: nil, mergeable_state: nil } unless pr_result[:success]
+
+      pr_data = pr_result[:data]
+      head_sha = pr_data.head.sha
+
+      # Extract merge conflict information
+      # mergeable can be: true (no conflicts), false (has conflicts), nil (being calculated)
+      # mergeable_state can be: "clean", "unstable", "dirty" (conflicts), "unknown", "blocked"
+      mergeable = pr_data.mergeable
+      mergeable_state = pr_data.mergeable_state
+
+      # Fetch check runs for the head SHA
+      checks_result = client.fetch_check_runs(repository, head_sha)
+      return { status: :unknown, details: [], mergeable: mergeable, mergeable_state: mergeable_state } unless checks_result[:success]
+
+      check_runs = checks_result[:data].check_runs
+      return { status: :pending, details: [], mergeable: mergeable, mergeable_state: mergeable_state } if check_runs.empty?
+
+      # Determine overall status
+      has_failure = check_runs.any? { |check| check.status == "completed" && check.conclusion == "failure" }
+      has_pending = check_runs.any? { |check| check.status != "completed" }
+
+      overall_status = if has_failure
+        :failure
+      elsif has_pending
+        :pending
+      else
+        :success
+      end
+
+      { status: overall_status, details: check_runs, mergeable: mergeable, mergeable_state: mergeable_state }
+    rescue Ralph::ConfigurationError => e
+      Rails.logger.warn("GitHub token not configured for checks: #{e.message}")
+      { status: :unknown, details: [], mergeable: nil, mergeable_state: nil }
+    rescue => e
+      Rails.logger.error("Error fetching PR checks: #{e.message}")
+      Rails.logger.error(e.backtrace.first(5).join("\n"))
+      { status: :unknown, details: [], mergeable: nil, mergeable_state: nil }
+    end
+  end
+
+  # Badge for CI/GitHub Actions status
+  def ci_status_badge(status)
+    badge_class, badge_text, badge_icon = case status
+    when :success
+      ["badge-ci-success", "Checks passing", "✓"]
+    when :failure
+      ["badge-ci-failure", "Checks failing", "✗"]
+    when :pending
+      ["badge-ci-pending", "Checks running", "●"]
+    else
+      ["badge-ci-unknown", "No checks", "?"]
+    end
+
+    content_tag(:span, "#{badge_icon} #{badge_text}", class: "badge #{badge_class}")
+  end
+
+  # Badge for merge conflict status
+  # mergeable: true (no conflicts), false (has conflicts), nil (calculating/unknown)
+  # mergeable_state: "clean", "unstable", "dirty", "unknown", "blocked"
+  def merge_conflict_badge(mergeable, mergeable_state)
+    return nil if mergeable.nil? && mergeable_state.nil?
+
+    badge_class, badge_text, badge_icon = case mergeable_state
+    when "clean"
+      ["badge-merge-clean", "No conflicts", "✓"]
+    when "dirty"
+      ["badge-merge-conflict", "Merge conflicts", "⚠️"]
+    when "unstable"
+      ["badge-merge-unstable", "Unstable", "⚠️"]
+    when "blocked"
+      ["badge-merge-blocked", "Blocked", "🚫"]
+    when "unknown"
+      ["badge-merge-unknown", "Status unknown", "?"]
+    else
+      # Fallback to mergeable boolean if mergeable_state isn't helpful
+      if mergeable == false
+        ["badge-merge-conflict", "Merge conflicts", "⚠️"]
+      elsif mergeable == true
+        ["badge-merge-clean", "No conflicts", "✓"]
+      else
+        ["badge-merge-unknown", "Status unknown", "?"]
+      end
+    end
+
+    content_tag(:span, "#{badge_icon} #{badge_text}", class: "badge #{badge_class}")
+  end
 end

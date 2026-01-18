@@ -1,0 +1,30 @@
+# Test fixtures for Project model
+# Note: Encrypted fields (github_token, github_webhook_secret, anthropic_api_key)
+# should be set in test setup using the accessors, not the _ciphertext fields
+
+acme_web:
+  name: ACME Web App
+  slug: acme-web
+  github_repository: acme-corp/web-app
+  active: true
+  settings: {}
+  created_at: <%= 30.days.ago %>
+  updated_at: <%= 1.day.ago %>
+
+acme_api:
+  name: ACME API
+  slug: acme-api
+  github_repository: acme-corp/api
+  active: true
+  settings: {}
+  created_at: <%= 20.days.ago %>
+  updated_at: <%= 2.days.ago %>
+
+inactive_project:
+  name: Inactive Project
+  slug: inactive-project
+  github_repository: acme-corp/old-project
+  active: false
+  settings: {}
+  created_at: <%= 60.days.ago %>
+  updated_at: <%= 30.days.ago %>

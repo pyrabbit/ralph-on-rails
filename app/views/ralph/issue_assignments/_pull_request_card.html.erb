@@ -12,6 +12,13 @@
     </div>
     <div class="pr-state">
       <%= pr_state_badge(pull_request.state) %>
+      <% if defined?(ci_status) && ci_status %>
+        <%= ci_status_badge(ci_status) %>
+      <% end %>
+      <% if defined?(pr_check_data) && pr_check_data %>
+        <% merge_badge = merge_conflict_badge(pr_check_data[:mergeable], pr_check_data[:mergeable_state]) %>
+        <%= merge_badge if merge_badge %>
+      <% end %>
     </div>
   </div>
 

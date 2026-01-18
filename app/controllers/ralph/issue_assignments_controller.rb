@@ -13,13 +13,24 @@ module Ralph
       @issue = Ralph::IssueAssignment
         .includes(
           :design_documents,
+          :pull_requests,
           :parent_issue,
+          task_queue_items: :iterations,
           child_issues: [:design_documents, :pull_requests]
         )
         .find(params[:id])
 
       @active_design_doc = @issue.design_documents.order(created_at: :desc).first
       @metrics = calculate_root_issue_metrics(@issue)
+      @iterations = @issue.iterations
+
+      # Fetch CI status for all PRs
+      @pr_check_statuses = {}
+      @issue.pull_requests.each do |pr|
+        if pr.github_pr_number && pr.repository
+          @pr_check_statuses[pr.id] = fetch_pr_checks_status(pr.repository, pr.github_pr_number)
+        end
+      end
 
       # Check if design approved label exists (only if active design doc exists)
       if @active_design_doc && @issue.github_issue_number && @issue.repository
@@ -37,6 +48,9 @@ module Ralph
           Rails.logger.error("Error checking GitHub label: #{e.message}")
         end
       end
+
+      # Start broadcasting updates for this issue
+      BroadcastIssueUpdatesJob.perform_later(@issue.id)
     end
 
     def toggle_design_approved

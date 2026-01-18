@@ -1,0 +1,27 @@
+<%= turbo_frame_tag "pr_summary_card" do %>
+  <% if issue.pull_requests.any? %>
+    <div class="overview-card pr-summary-card">
+      <div class="card-header">
+        <h3>🔀 Pull Requests (<%= issue.pull_requests.count %>)</h3>
+      </div>
+      <div class="card-content">
+        <div class="pr-summary-list">
+          <% issue.pull_requests.order(created_at: :desc).limit(3).each do |pr| %>
+            <div class="pr-summary-item">
+              <% if pr.github_pr_number %>
+                <%= link_to "PR ##{pr.github_pr_number}", pr.url, target: "_blank", rel: "noopener noreferrer" %>
+                <%= pr_state_badge(pr.state) %>
+                <% if pr_check_statuses[pr.id] %>
+                  <%= ci_status_badge(pr_check_statuses[pr.id][:status]) %>
+                <% end %>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+        <button data-tabs-target="tab" data-tab="prs" data-action="click->tabs#select" class="view-tab-link">
+          View All PRs →
+        </button>
+      </div>
+    </div>
+  <% end %>
+<% end %>

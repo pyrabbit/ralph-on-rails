@@ -1,0 +1,45 @@
+# Test fixtures for ProjectMembership model
+# This connects users to projects with specific roles (viewer, member, owner)
+
+# Alice is owner of acme_web
+alice_acme_web_owner:
+  user: alice
+  project: acme_web
+  role: owner
+  created_at: <%= 30.days.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Alice is member of acme_api
+alice_acme_api_member:
+  user: alice
+  project: acme_api
+  role: member
+  created_at: <%= 20.days.ago %>
+  updated_at: <%= 2.days.ago %>
+
+# Bob is owner of acme_api
+bob_acme_api_owner:
+  user: bob
+  project: acme_api
+  role: owner
+  created_at: <%= 20.days.ago %>
+  updated_at: <%= 2.days.ago %>
+
+# Bob is member of acme_web
+bob_acme_web_member:
+  user: bob
+  project: acme_web
+  role: member
+  created_at: <%= 30.days.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Charlie is viewer of acme_web
+charlie_acme_web_viewer:
+  user: charlie
+  project: acme_web
+  role: viewer
+  created_at: <%= 10.days.ago %>
+  updated_at: <%= 3.days.ago %>
+
+# Charlie has no access to acme_api
+# Charlie has no access to inactive_project

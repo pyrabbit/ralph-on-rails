@@ -5,6 +5,38 @@
   <%= link_to "← Back to Ralph Home", ralph_root_path %>
 </p>
 
+<% if @model_name == "pull_requests" && @record.github_pr_number %>
+  <div class="pr-info-section" style="margin-bottom: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 4px; background: #f9f9f9;">
+    <h2 style="margin-top: 0;">Pull Request Information</h2>
+    <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+      <% if @record.url %>
+        <%= link_to "PR ##{@record.github_pr_number}", @record.url, target: "_blank", rel: "noopener noreferrer", class: "pr-link-badge", style: "font-weight: bold; font-size: 1.1em;" %>
+      <% else %>
+        <span style="font-weight: bold;">PR #<%= @record.github_pr_number %></span>
+      <% end %>
+
+      <%= pr_state_badge(@record.state) %>
+
+      <% if @pr_check_status %>
+        <%= ci_status_badge(@pr_check_status[:status]) %>
+
+        <% merge_badge = merge_conflict_badge(@pr_check_status[:mergeable], @pr_check_status[:mergeable_state]) %>
+        <%= merge_badge if merge_badge %>
+      <% end %>
+
+      <% if @record.unresolved_comments_count && @record.unresolved_comments_count > 0 %>
+        <span class="badge" style="background: #ff9800; color: white; padding: 4px 8px; border-radius: 3px;">
+          ⚠️ <%= @record.unresolved_comments_count %> unresolved comment<%= @record.unresolved_comments_count > 1 ? 's' : '' %>
+        </span>
+      <% end %>
+    </div>
+
+    <% if @record.title.present? %>
+      <p style="margin-top: 10px; margin-bottom: 5px;"><strong>Title:</strong> <%= @record.title %></p>
+    <% end %>
+  </div>
+<% end %>
+
 <table border="1" cellpadding="10" cellspacing="0">
   <tbody>
     <% @record.attributes.each do |attr, value| %>

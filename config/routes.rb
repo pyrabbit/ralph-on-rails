@@ -9,23 +9,41 @@ Rails.application.routes.draw do
   # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
-  # Defines the root path route ("/")
-  # root "posts#index"
+  # Root
+  root to: 'application#home'
 
-  # Ralph database viewer routes
-  namespace :ralph do
-    root to: "home#index"
+  # Authentication
+  get 'login', to: 'sessions#new'
+  get 'auth/github/callback', to: 'sessions#create'
+  post 'auth/github/callback', to: 'sessions#create' # POST for CSRF protection
+  get 'auth/failure', to: 'sessions#failure'
+  delete 'logout', to: 'sessions#destroy'
 
-    resources :issue_assignments, only: [:index, :show] do
-      member do
-        post :toggle_design_approved
+  # Projects management (not scoped to specific project)
+  resources :projects, only: [:index, :new, :create]
+
+  # Project-scoped routes
+  scope ':project_id' do
+    # Project settings and management
+    resource :project, only: [:show, :edit, :update, :destroy], controller: 'projects' do
+      resources :members, only: [:index, :create, :destroy], controller: 'project_members'
+      get 'webhook', to: 'projects#webhook_info'
+    end
+
+    # Ralph data viewers (existing routes, now project-scoped)
+    namespace :ralph do
+      root to: 'home#index'
+      resources :issue_assignments, only: [:index, :show] do
+        member do
+          post :toggle_design_approved
+        end
       end
+      resources :models, only: [:index, :show]
     end
+  end
 
-    # Generic model browsing
-    scope "/:model_name" do
-      get "/", to: "models#index", as: :model
-      get "/:id", to: "models#show", as: :model_record
-    end
+  # Webhooks (project-specific, not authenticated)
+  namespace :webhooks do
+    post 'github/:project_id', to: 'github#create', as: :github_project
   end
 end

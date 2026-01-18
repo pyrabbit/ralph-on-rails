@@ -1,5 +1,7 @@
 module Ralph
   class Iteration < Base
+    belongs_to :task_queue_item, class_name: "Ralph::TaskQueueItem", optional: true
+    belongs_to :pull_request, class_name: "Ralph::PullRequest", optional: true
     has_one :claude_session, class_name: "Ralph::ClaudeSession", foreign_key: :iteration_id
 
     scope :recent, -> { order(started_at: :desc).limit(100) }

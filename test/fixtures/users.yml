@@ -1,0 +1,29 @@
+# Test fixtures for User model
+# Note: github_access_token is encrypted via Lockbox
+
+alice:
+  github_id: 1001
+  github_login: alice
+  github_name: Alice Developer
+  github_email: alice@example.com
+  github_avatar_url: https://avatars.githubusercontent.com/u/1001
+  created_at: <%= 30.days.ago %>
+  updated_at: <%= 1.day.ago %>
+
+bob:
+  github_id: 1002
+  github_login: bob
+  github_name: Bob Engineer
+  github_email: bob@example.com
+  github_avatar_url: https://avatars.githubusercontent.com/u/1002
+  created_at: <%= 20.days.ago %>
+  updated_at: <%= 2.days.ago %>
+
+charlie:
+  github_id: 1003
+  github_login: charlie
+  github_name: Charlie Viewer
+  github_email: charlie@example.com
+  github_avatar_url: https://avatars.githubusercontent.com/u/1003
+  created_at: <%= 10.days.ago %>
+  updated_at: <%= 3.days.ago %>

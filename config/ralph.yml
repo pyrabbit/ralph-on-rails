@@ -1,0 +1,36 @@
+github:
+  token: <%= ENV['GITHUB_TOKEN'] %>
+  repository: owner/repo  # Change this to your repository (format: owner/repo)
+
+claude:
+  api_key: <%= ENV['CLAUDE_API_KEY'] %>
+
+database:
+  path: db/ralph.sqlite3
+
+loop:
+  min_sleep: 5        # Minimum seconds between iterations
+  max_backoff: 600    # Maximum backoff time (10 minutes)
+
+worktree:
+  base_path: /tmp/ralph_worktrees
+
+# Commands for quality checks
+# These can be customized for different language ecosystems
+commands:
+  lint: "bundle exec rake standard"  # Use "npm run lint" for JavaScript, "pylint ." for Python, etc.
+  test: "bundle exec rake test"     # Use "npm test" for JavaScript, "pytest" for Python, etc.
+  # Set to null to disable: lint: null
+
+# Optional: Uncomment and configure for notifications
+# notifications:
+#   slack_webhook_url: <%= ENV['SLACK_WEBHOOK_URL'] %>
+#   discord_webhook_url: <%= ENV['DISCORD_WEBHOOK_URL'] %>
+
+# Image processing configuration (optional)
+images:
+  enabled: true                    # Enable/disable image processing
+  temp_dir: /tmp/ralph_images      # Temp directory for downloads
+  max_images: 10                   # Max images per issue
+  max_file_size: 10485760          # Max bytes per image (10MB)
+  download_timeout: 30             # HTTP timeout in seconds

@@ -23,6 +23,11 @@ module Ralph
     def show
       @record = @model_class.find(params[:id])
       @model_name = params[:model_name]
+
+      # Fetch CI status for Pull Requests
+      if @model_class == Ralph::PullRequest && @record.github_pr_number && @record.repository
+        @pr_check_status = fetch_pr_checks_status(@record.repository, @record.github_pr_number)
+      end
     end
 
     private

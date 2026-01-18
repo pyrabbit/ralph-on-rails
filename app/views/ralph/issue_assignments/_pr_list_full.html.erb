@@ -1,0 +1,20 @@
+<%= turbo_frame_tag "pr_list_full" do %>
+  <% if issue.pull_requests.any? %>
+    <div class="pull-requests-section">
+      <h2>🔀 Pull Requests</h2>
+      <div class="pull-requests-list">
+        <% issue.pull_requests.order(created_at: :desc).each do |pr| %>
+          <%= render partial: "ralph/issue_assignments/pull_request_card", locals: {
+            pull_request: pr,
+            ci_status: pr_check_statuses[pr.id]&.dig(:status),
+            pr_check_data: pr_check_statuses[pr.id]
+          } %>
+        <% end %>
+      </div>
+    </div>
+  <% else %>
+    <div class="empty-state">
+      <p>No pull requests.</p>
+    </div>
+  <% end %>
+<% end %>
